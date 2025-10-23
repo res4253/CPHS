@@ -8,12 +8,17 @@ clc;
 Path = [
     './t1dms_data/subjects/:',...
     './t1dms_data/simu_data/:'];
+
+
+Path = [
+    '.\t1dms_data\subjects\;',...
+    '.\t1dms_data\simu_data\;'];
 addpath(Path);
 
 %%%
 d = "ssogmm"; %ssogmm inequality linear
 for subject_num = 9
-    for seed = 1
+    for seed = 9
 
 
         if subject_num == 10
@@ -66,9 +71,13 @@ for subject_num = 9
         hold on
         plot(data_ssogmm.ts,data_ssogmm.Gs,'LineWidth',2)
         legend('uva/padova','ssogmm')
+        xlim([0 2600])
+        grid on
+        xticks(0:500:2500)   % 0, 2, 4, 6, 8, 10 に主目盛りを設定
+yticks(100:50:250) % -1, -0.5, 0, 0.5, 1 に設定
 
         %%%%%
-        %%%%%
+         
         if d == "inequality"
             %% mode %%
             Q = [data_ssogmm.xs(3,:);data_ssogmm.xs(4,:)];
