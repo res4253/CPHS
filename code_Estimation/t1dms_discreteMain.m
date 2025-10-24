@@ -12,6 +12,7 @@ Path = [
 
 addpath(Path);
 
+
 %%%%
 
 for subject_num =3 %subject
@@ -114,7 +115,10 @@ for subject_num =3 %subject
 
 
         %observer
-        [L,pole] = gain(p,Ts);
+        % 状態推定誤差の重み
+        Q = diag([1, 1, 1, 1, 1]);%
+        R = 1e16;
+        [L,pole] = gain(p,Ts,Q,R);
 
         delta_xob = zeros(5,N);
         xob = zeros(5,N);

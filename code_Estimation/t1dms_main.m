@@ -17,7 +17,7 @@ addpath(Path);
 
 %%%
 d = "ssogmm"; %ssogmm inequality linear
-for subject_num = 1
+for subject_num = 3
     for seed = 9
 
 

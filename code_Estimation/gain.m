@@ -1,4 +1,4 @@
-function [obserber_gain,pole] = gain(p,Ts)
+function [obserber_gain,pole] = gain(p,Ts,Q,R)
 
 G_b = p(1);
 V_I = p(2);
@@ -35,9 +35,6 @@ if Ts ~= 0
     A = expm(A*Ts);
 end
 
-% 状態推定誤差の重み
-Q = diag([1, 1, 1, 1, 1]);%
-R = 1;
 
 % [-0.0054;-0.0024;-0.1221;-0.0389;-0.0389]
 % op = [-0.0084; -0.025; -0.123; -0.039; -0.04];

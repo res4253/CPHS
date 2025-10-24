@@ -1,7 +1,8 @@
 close all
 clear
 clc
-
+j = 1 ;
+L_block = [];
 Path = ['./t1dms_data/:',...
     './t1dms_data/subjects/:',...
     './t1dms_data/simu_data/:'];
@@ -18,6 +19,8 @@ load('temp.mat') %サンプリングデータのロード
 load(['t1dms_adult',num2str(subject_num),'_seed',num2str(seed),'.mat'])
 p = p_esti;
 
+for a = [1e6 1e8 1e10] %[0.01 10 10000] , [1e6 1e8 1e10] ,[1 1e8 1e12] [1e-4 1e-6 1e-8] ,
+%% 
 %sampling time
 N = size(data_ssogmm.ts,2);
 N_step = 1:N;
@@ -61,7 +64,10 @@ end
 x_ini = x_esti(:,500);
 x_ini = x_ini([1 2 5 6 7]);
 
-L = gain(p,Ts);
+% 状態推定誤差の重み
+Q = diag([1, 1, 1, 1, a]);%
+R = 1;
+L = gain(p,Ts,Q,R);
 
 delta_xob = zeros(5,N);
 xob = zeros(5,N);
@@ -79,8 +85,77 @@ for k=2:N
 end
 
 
-plot(Y,'LineWidth',2)
-hold on
-plot(x(1,:),'.')
-plot(xob(1,:),'.')
-legend('uva/padova','x','xob')
+% plot(Y,'LineWidth',2)
+% hold on
+% plot(x(1,:),'.')
+% plot(xob(1,:),'.')
+% legend('uva/padova','x','xob')
+
+
+ssogmm5 = data_ssogmm.xs([1 2 5 6 7],:);
+% f = figure;
+% f.Position = [272,453,1577,454];
+% tiledlayout(2,3)
+% for k = 1:5
+%     nexttile
+%     % f = figure;
+%     % f.Position = [272,453,1577,454];
+%     if k == 1
+%         plot(G,LineWidth=2)
+%         hold on
+%         plot(data_ssogmm.ts,ssogmm5(k,:),'Color',[0.4940,0.1840,0.5560],LineWidth=1)
+%         plot(data_ssogmm.ts,xob(k,:),'.','Color',[0.8500,0.3250,0.0980 ],LineWidth=2)
+%         hold off
+%         legend('UVA/Padova','SSOGMM','Observer')
+%     else
+%         hold on
+%         plot(data_ssogmm.ts,ssogmm5(k,:),'Color',[0.4940,0.1840,0.5560],LineWidth=1)
+%         plot(data_ssogmm.ts,xob(k,:),'.',LineWidth=2)
+%         hold off
+%         legend('SSOGMM','Observer')
+%     end
+%     xlim([0 1550])
+%     % ax = gca;
+%     % saveFig(ax,'pdf')
+% end
+
+
+for i=1:5
+
+    if j == 1
+        if i == 1
+            figure
+            plot(G,'LineWidth',2)
+            hold on
+            plot(data_ssogmm.ts,xob(i,:),'.','LineWidth',2)
+        else
+            figure
+            plot(data_ssogmm.ts,ssogmm5(i,:),'LineWidth',2)
+            hold on
+            plot(data_ssogmm.ts,xob(i,:),'.','LineWidth',2)
+        end
+    else
+        figure(i)
+        hold on
+        plot(data_ssogmm.ts,xob(i,:),'.','LineWidth',2)
+    end
+    j= 1 + j;
+
+end
+    L_block = [L_block,L];
+
+end
+
+for i = 1:5
+    figure(i)
+    hold on
+    plot(data_ssogmm.ts,ssogmm5(i,:))
+    legend
+    % ユーザーにファイル名を入力してもらう
+    filename = input('保存するファイル名を入力してください（拡張子は不要）: ', 's');
+
+    % fig ファイルとして保存
+    savefig([filename, '.fig']);
+end
+
+save L L_block
