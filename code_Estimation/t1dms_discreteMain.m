@@ -9,8 +9,8 @@ addpath(Path);
 
 %%%%
 
-for subject_num =1 %subject
-    for seed = 1 %seed
+for subject_num =3 %subject
+    for seed = 9 %seed
 
         d = "linear"; %ssogmm inequality linear
 
@@ -175,3 +175,12 @@ for subject_num =1 %subject
     end
 end
 
+
+ssogmm = data_ssogmm.xs([1 2 5 6 7],:);
+for i=1:5
+    figure
+    plot(ssogmm(i,:),'LineWidth',2)
+    grid on
+    ax = gca;
+    saveFig(ax,'png')
+end

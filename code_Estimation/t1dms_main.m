@@ -17,7 +17,7 @@ addpath(Path);
 
 %%%
 d = "ssogmm"; %ssogmm inequality linear
-for subject_num = 9
+for subject_num = 1
     for seed = 9
 
 
@@ -74,7 +74,7 @@ for subject_num = 9
         xlim([0 2600])
         grid on
         xticks(0:500:2500)   % 0, 2, 4, 6, 8, 10 に主目盛りを設定
-yticks(100:50:250) % -1, -0.5, 0, 0.5, 1 に設定
+        yticks(100:50:250) % -1, -0.5, 0, 0.5, 1 に設定
 
         %%%%%
          
