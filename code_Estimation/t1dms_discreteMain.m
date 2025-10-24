@@ -5,6 +5,11 @@ clc;
 Path = [
     './t1dms_data/subjects/:',...
     './t1dms_data/simu_data/:'];
+
+% Path = [
+%     '.\t1dms_data\subjects\;',...
+%     '.\t1dms_data\simu_data\;'];
+
 addpath(Path);
 
 %%%%
